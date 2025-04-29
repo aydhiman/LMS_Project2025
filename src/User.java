@@ -6,11 +6,13 @@ public abstract class User {
     private String key;
     public String role;
 
-    public User(String userName, String userContact, String role) {
+    User(String userName, String userContact, String role) {
         this.userID = "" + ++idCount;
         this.userName = userName;
         this.userContact = userContact;
         this.role = role;
+        setKey();
+        System.out.println("Your user id is successfully generated with ID : "+userID);
     }
 
     public String getUserID() {
@@ -50,7 +52,10 @@ public abstract class User {
         return true;
     }
 
-    public void setKey(String key) {
+    void setKey(){
+        this.key = Input.takeLine("Input the new key : ");
+    }
+    void setKey(String key) {
         this.key = key;
         System.out.println("Your key has been Changed Now");
     }
