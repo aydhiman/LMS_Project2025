@@ -1,62 +1,106 @@
-public abstract class User {
-    public static int idCount = 0;
-    private final String userName;
-    private final String userID;
+abstract class User {
+    public String userId;
+    private String userKey;
+    private String userName;
     private String userContact;
-    private String key;
-    public String role;
-
-    User(String userName, String userContact, String role) {
-        this.userID = "" + ++idCount;
-        this.userName = userName;
-        this.userContact = userContact;
-        this.role = role;
-        setKey();
-        System.out.println("Your user id is successfully generated with ID : "+userID);
-    }
-
-    public String getUserID() {
-        return userID;
-    }
 
     public String getUserName() {
         return userName;
+    }
+    public void setUserName() {
+        this.userName = Input.takeLine("Enter Name : ");
+    }
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserContact() {
         return userContact;
     }
-
-    public void setUserContact(String userContact){
+    public void setUserContact() {
+        this.userContact = Input.takeLine("Enter Contact : ");
+    }
+    public void setUserContact(String userContact) {
         this.userContact = userContact;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public boolean verify(String userID) {
-        String enteredPassword = Input.takeLine("Enter the Current Password : ");
-        return enteredPassword.equals(key);
-    }
-
-    public boolean changeKey(String userID) {
-        if (!this.userID.equals(userID)) {
-            System.out.println("Unknown User");
+    public boolean verify() {
+        String key = Input.takeLine("Enter your Key : ");
+        if (key.equals(userKey)) {
+            System.out.println("Verified");
+            return true;
+        } else {
+            System.out.println("Bad Password Try Again");
             return false;
         }
-        if (!verify(userID)) {
-            return false;
-        }
-        this.key = Input.takeLine("Input the new key : ");
-        return true;
     }
 
-    void setKey(){
-        this.key = Input.takeLine("Input the new key : ");
+    public void createKey() {
+        String key = Input.takeLine("Enter Key : ");
+        if (key != null && !key.isEmpty()) {
+            userKey = key;
+            System.out.println("Key Created for " + userId);
+        }
     }
-    void setKey(String key) {
-        this.key = key;
-        System.out.println("Your key has been Changed Now");
+    public void createKey(String userKey) {
+        if (userKey != null && !userKey.isEmpty()) {
+            this.userKey = userKey;
+            System.out.println("Key Created for " + userId);
+        }
+    }
+
+    public void setKey() {
+        if (userKey == null) {
+            createKey();
+            return;
+        }
+        if (!verify()) {
+            System.out.println("Exiting, Try Again !");
+            return;
+        }
+        String key = Input.takeLine("Enter New Key : ");
+        if (key != null && !key.isEmpty()) {
+            userKey = key;
+            System.out.println("Key Updated for " + userId);
+        }
+    }
+
+    User() {
+        setUserName();
+        setUserContact();
+    }
+    User(String userName, String userContact){
+        userKey = "1";
+        this.userName = userName;
+        this.userContact = userContact;
+    }
+}
+
+class Reader extends User {
+    public static int readerCount = 0;
+    public Account account;
+
+    public Reader() {
+        super();
+        userId = "r" + (++readerCount);
+        createKey();
+        account = new Account(this);
+        System.out.println("Account Created for Reader " + getUserName() + " with User ID " + userId);
+    }
+    public Reader(String userName, String Contact ){
+        super(userName,Contact);
+        account = new Account(this);
+        this.userId = "r" + (++readerCount);
+    }
+}
+
+class Librarian extends User {
+    public static int librarianCount = 0;
+
+    Librarian() {
+        super();
+        userId = "l" + (++librarianCount);
+        createKey();
+        System.out.println("Account Created for Librarian " + getUserName() + " with User ID " + userId);
     }
 }

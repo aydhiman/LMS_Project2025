@@ -1,97 +1,76 @@
-public class Readers {
+class Readers {
     class ReaderNode {
         Reader reader;
-        ReaderNode previousReader;
-        ReaderNode nextReader;
+        ReaderNode prev, next;
 
         ReaderNode() {
-            String name = Input.takeLine("Enter Name: ");
-            String contact = Input.takeLine("Enter Contact: ");
-            this.reader = new Reader(name, contact);
+            this.reader = new Reader();
+        }
+        ReaderNode(Reader reader) {
+            this.reader = reader;
         }
     }
 
-    private ReaderNode head;
-    private ReaderNode tail;
-    static int readersCount = 0;
+    private ReaderNode head, tail;
+    private int count = 0;
 
     public void addReader() {
-        ReaderNode newNode = new ReaderNode();
+        ReaderNode node = new ReaderNode();
         if (head == null) {
-            head = tail = newNode;
+            head = tail = node;
         } else {
-            tail.nextReader = newNode;
-            newNode.previousReader = tail;
-            tail = newNode;
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
         }
-        readersCount++;
+        count++;
     }
 
-    public boolean removeReader(int index) {
-        if (index < 0 || index >= readersCount) {
-            System.out.println("Invalid index!");
-            return false;
-        }
-
-        ReaderNode current = head;
-        for (int i = 0; i < index; i++) {
-            current = current.nextReader;
-        }
-
-        if (current.previousReader == null) {
-            head = current.nextReader;
+    public void addReader(Reader reader) {
+        ReaderNode node = new ReaderNode(reader);
+        if (head == null) {
+            head = tail = node;
         } else {
-            current.previousReader.nextReader = current.nextReader;
+            tail.next = node;
+            node.prev = tail;
+            tail = node;
         }
+        count++;
+    }
 
-        if (current.nextReader == null) {
-            tail = current.previousReader;
-        } else {
-            current.nextReader.previousReader = current.previousReader;
+    public void displayAllIssues(){
+        ReaderNode curr = head;
+        while (curr != null) {
+            System.out.println("Reader ID: " + curr.reader.userId + ", Name: " + curr.reader.getUserName());
+            try{
+                curr.reader.account.issuedList.displayAll();
+            }
+            catch(Exception e){
+                continue;
+            }
+            finally {
+                curr = curr.next;
+            }
         }
-
-        readersCount--;
-        return true;
+    }
+    public Reader findReaderByID(String id) {
+        ReaderNode curr = head;
+        while (curr != null) {
+            if (curr.reader.userId.equals(id)) return curr.reader;
+            curr = curr.next;
+        }
+        return null;
     }
 
     public void displayReaders() {
-        if (head == null) {
-            System.out.println("No readers in the list.");
-            return;
-        }
-
-        ReaderNode current = head;
-        while (current != null) {
-            System.out.println("Reader Name: " + current.reader.getUserName());
-            System.out.println("Contact: " + current.reader.getUserContact());
-            current = current.nextReader;
+        ReaderNode curr = head;
+        while (curr != null) {
+            System.out.println("Reader ID: " + curr.reader.userId + ", Name: " + curr.reader.getUserName());
+            curr = curr.next;
         }
     }
 
-    public int getReaderCount() {
-        return readersCount;
+    public int getCount() {
+        return count;
     }
-
-    public Reader findReaderByName(String name) {
-        ReaderNode current = head;
-        while (current != null) {
-            if (current.reader.getUserName().equals(name)) {
-                return current.reader;
-            }
-            current = current.nextReader;
-        }
-        return null;
-    }
-
-    public Reader findReaderByID(String userID) {
-        ReaderNode current = head;
-        while (current != null) {
-            if (current.reader.getUserID().equals(userID)) {
-                return current.reader;
-            }
-            current = current.nextReader;
-        }
-        return null;
-    }
-
 }
