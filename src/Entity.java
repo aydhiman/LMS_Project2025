@@ -252,7 +252,7 @@ class Issue implements Entity {
         System.out.println("Issue ID: " + issueId);
         System.out.println("Book ID: " + bookId);
         System.out.println("Reader ID: " + readerId);
-        System.out.println("Issue Date: " + issueDate);
+        System.out.println("Issue Date:: " + issueDate);
         System.out.println("Return Date: " + returnDate);
     }
     public void returnBook(){
