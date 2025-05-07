@@ -1,19 +1,5 @@
 import javax.crypto.SealedObject;
 
-//import java.util.ListResourceBundle;
-//
-//class userNotFoundException extends Exception{
-//    String message = "User Not Found ! Check ID Again";
-//    public String toString() {
-//        return message;
-//    }
-//    public String getMessage() {
-//        return message;
-//    }
-//}
-//class notValidException extends Exception{
-//
-//}
 class LoginInterface {
     //    public boolean()
     public void login() {
@@ -25,7 +11,6 @@ class LoginInterface {
                 continue;
             } else if (userId.startsWith("r")) {
                 System.out.println("Reader detecedted");
-//                Main.allReaders.displayAll();
                 Reader loginUser = (Reader) Main.allReaders.findById(userId);
                 if (loginUser == null || (!loginUser.verify())) {
                     System.out.println("Not Found, Check UserId");

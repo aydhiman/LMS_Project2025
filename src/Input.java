@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
-class Input {
+class Input{
     static Scanner input = new Scanner(System.in);
     public static String takeLine(String message){
         System.out.print(message);

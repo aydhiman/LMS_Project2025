@@ -136,35 +136,34 @@ class UserInterfaces {
         }
     }
     public void userManagement(){
-            System.out.println("Select User Management Options :\n\t1.)Add New Reader\n\t2.)View All Readers\n\t3.)Search Reader\n\t4.)Update Reader\n\t5.)Delete Reader\n\t6.)ReCreate User Password");
+        while(true) {
+            System.out.println("Select User Management Options:\n\t1.)Add New Reader\n\t2.)View All Readers\n\t3.)Search Reader\n\t4.)Update Reader\n\t5.)Delete Reader\n\t6.)ReCreate User Password");
             String secondSelection = Input.takeLine("Enter Your Option : ");
-            if(secondSelection.contains("*"))return;
-            else if(secondSelection.contains("1")){
+            if (secondSelection.contains("*")) return;
+            else if (secondSelection.contains("1")) {
                 Main.allReaders.add();
-            }
-            else if(secondSelection.contains("2")){
+            } else if (secondSelection.contains("2")) {
                 Main.allReaders.displayAll();
             } else if (secondSelection.contains("3")) {
                 searchReaders();
             } else if (secondSelection.contains("4")) {
                 String userId = Input.takeLine("Enter User ID to Update : ");
                 Entity user = Main.allBooks.findById(userId);
-                if(user==null){
+                if (user == null) {
                     System.out.println("User can not be retrieved to Update !");
                 }
-                updateUser((User)user);
-            }
-            else if (secondSelection.contains("5")){
+                updateUser((User) user);
+            } else if (secondSelection.contains("5")) {
                 Main.allReaders.deleteById(Input.takeLine("Enter Reader Id to Delete : "));
-            }
-            else if (secondSelection.contains("6")){
+            } else if (secondSelection.contains("6")) {
                 String userId = Input.takeLine("Enter User Id to ReCreate Password : ");
                 Reader user = (Reader) Main.allReaders.findById(userId);
-                if(user==null) {
+                if (user == null) {
                     System.out.println("Cannot Find ! Retry ");
                 }
                 user.createKey();
             }
+        }
     }
     public void searchReaders(){
         while(true){

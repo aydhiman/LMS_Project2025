@@ -7,7 +7,7 @@ public class Main {
     static Books allBooks ;
 
     //Starting Point of the Programme
-    public static void main(String[] args) {
+    public static void main(String[] args){
 
         //Function call to Load data from files
         FileStorage.load();
