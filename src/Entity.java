@@ -78,7 +78,31 @@ abstract class User implements Entity {
         System.out.println("Username: " + userName);
         System.out.println("User Contact: " + userContact);
     }
-
+//    public void display() {
+//        String toString = new String("");
+//        StringBuilder toAdd = new StringBuilder();
+//        while(toAdd.length()<4){
+//            toAdd = toAdd.insert(0,"0");
+//        }
+//        toString += "Book Id: " + toAdd;
+//        toAdd = new StringBuilder(bookName);
+//        if(toAdd.length()>15){
+//            toAdd = new StringBuilder(toAdd.substring(0, 20));
+//        }
+//        while(toAdd.length()<15){
+//            toAdd.append(" ");
+//        }
+//        toString += " | Book Title: " + toAdd;
+//        toAdd = new StringBuilder(author);
+//        if(toAdd.length()>8){
+//            toAdd = new StringBuilder(toAdd.substring(0,8));
+//        }
+//        while(toAdd.length()<8){
+//            toAdd.append(" ");
+//        }
+//        toString += " | Book Author: " + toAdd;
+//        toString += " | Is Available: " + ((!isIssued)?"Available":"Not Available");
+//        System.out.println(toString);
     @Override
     public void update() {
         if (!verify()) return;
@@ -224,7 +248,6 @@ class Book implements Entity {
         toString += " | Is Available: " + ((!isIssued)?"Available":"Not Available");
         System.out.println(toString);
     }
-
     @Override
     public void update() {
         this.bookName = Input.takeLine("Enter New Book Name: ");
@@ -232,7 +255,6 @@ class Book implements Entity {
         System.out.println("Book updated with ID: " + bookId);
         display();
     }
-
     public void update(String bookName, String bookAuthor) {
         this.bookName = bookName;
         this.author = bookAuthor;

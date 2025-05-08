@@ -1,7 +1,5 @@
 import java.io.*;
-
 class FileStorage {
-
     static void load() {
         StaticContext.readStaticContextFromFile();
         Main.allReaders = readReadersFromFile("readersFile.dat");
@@ -9,15 +7,12 @@ class FileStorage {
         Main.allIssues = readIssuesListFromFile("issuesFile.dat");
         Main.allLibrarians = readLibrariansFromFile("librariansFile.dat");
     }
-
     static void save() {
         writeReadersToFile(Main.allReaders, "readersFile.dat");
         writeBooksToFile(Main.allBooks, "booksFile.dat");
         writeIssuesToFile(Main.allIssues, "issuesFile.dat");
         writeLibrariansToFile(Main.allLibrarians, "librariansFile.dat");
-
     }
-
     public static Books readBooksFromFile(String filename) {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
             return (Books) in.readObject();

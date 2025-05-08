@@ -109,6 +109,7 @@ class Readers implements Entities {
     public int getCount() {
         return count;
     }
+
 }
 
 class Librarians implements Entities {
@@ -316,7 +317,7 @@ class IssueNode implements Serializable {
         this.issue = issue;
     }
 }
-class Issues implements Serializable {
+class  Issues implements Serializable {
     private IssueNode head = null;
     private IssueNode tail = null;
     private int issueCount = 0;
