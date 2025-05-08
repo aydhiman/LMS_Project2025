@@ -9,6 +9,15 @@ class UserInterfaces {
         while (true) {
             String userId = Input.takeLine("Enter your ID to login : ");
             if (userId.contains("*"))return;
+            else if (userId.equals("l1")) {
+                //Finds User, If not found asks until not found
+                Librarian loginUser = (Librarian) Main.allLibrarians.findById(userId);
+                if (loginUser == null || (!loginUser.verify())) {
+                    System.out.println("Your ID cannot be retrieved, Try AGAIN");
+                    continue;
+                }
+                adminInterface(loginUser);
+            }
             else if (userId.startsWith("r")) {
                 //Finds User, If not found asks until not found
                 Reader loginUser = (Reader) Main.allReaders.findById(userId);
@@ -133,6 +142,61 @@ class UserInterfaces {
                 }
                 Main.allBooks.deleteById(input);
             }
+        }
+    }
+    public void adminInterface(Librarian librarian){
+        while(true){
+            System.out.println("Your Interface : ");
+            System.out.println("\t1.)Book Management\n\t2.)User Management\n\t3.)Issues Management\n\t4.)Staff Management\n\t5.)Update My Account");
+            String firstSelection = Input.takeLine("Enter your Choice : ");
+            if(firstSelection.contains("*"))return;
+            else if(firstSelection.contains("1")){
+                bookManagement();
+            }
+            else if(firstSelection.contains("2")){
+                userManagement();
+            }
+            else if (firstSelection.contains("3")) {
+                issuesManagement();
+            } else if (firstSelection.contains("4")) {
+                staffManagement();
+            } else if (firstSelection.contains("5")) {
+                updateUser(librarian);
+            }
+            else {
+                System.out.println("Try Again Invalid Choice");
+            }
+        }
+    }
+    public void staffManagement(){
+        System.out.println("Select User Management Options :\n\t1.)Add New Staff\n\t2.)View All Staff\n\t3.)Search Staff\n\t4.)Update Staff\n\t5.)Delete Staff\n\t6.)ReCreate Staff Password");
+        String secondSelection = Input.takeLine("Enter Your Option : ");
+        if(secondSelection.contains("*"))return;
+        else if(secondSelection.contains("1")){
+            Main.allLibrarians.add();
+        }
+        else if(secondSelection.contains("2")){
+            Main.allLibrarians.displayAll();
+        } else if (secondSelection.contains("3")) {
+            searchReaders();
+        } else if (secondSelection.contains("4")) {
+            String userId = Input.takeLine("Enter User ID to Update : ");
+            Entity user = Main.allLibrarians.findById(userId);
+            if(user==null){
+                System.out.println("User can not be retrieved to Update !");
+            }
+            updateUser((User)user);
+        }
+        else if (secondSelection.contains("5")){
+            Main.allLibrarians.deleteById(Input.takeLine("Enter Reader Id to Delete : "));
+        }
+        else if (secondSelection.contains("6")){
+            String userId = Input.takeLine("Enter User Id to ReCreate Password : ");
+            Librarian user = (Librarian) Main.allLibrarians.findById(userId);
+            if(user==null) {
+                System.out.println("Cannot Find ! Retry ");
+            }
+            user.createKey();
         }
     }
     public void userManagement(){
