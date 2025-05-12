@@ -72,13 +72,23 @@ abstract class User implements Entity {
         }
     }
 
-    @Override
-    public void display() {
-        System.out.println("User ID: " + userId);
-        System.out.println("Username: " + userName);
-        System.out.println("User Contact: " + userContact);
-    }
+//    @Override
 //    public void display() {
+//        System.out.println("User ID: " + userId);
+//        System.out.println("Username: " + userName);
+//        System.out.println("User Contact: " + userContact);
+//    }
+    public void display() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("User ID: ").append(String.format("%-5s", this.userId));
+        sb.append(" | Name: ").append(String.format("%-15s", this.userName.length() > 15 ? this.userName.substring(0, 15) : this.userName));
+        sb.append(" | Contact: ").append(String.format("%-12s", this.userContact.length() > 12 ? this.userContact.substring(0, 12) : this.userContact));
+
+        System.out.println(sb.toString());
+    }
+
+    //    public void display() {
 //        String toString = new String("");
 //        StringBuilder toAdd = new StringBuilder();
 //        while(toAdd.length()<4){
@@ -304,7 +314,7 @@ class Issue implements Entity {
         }
         toString += " | UserId: " + toAdd;
         toString += " | ReturnDate: " + (returnedDate);
-        System.out.println("\n"+toString);
+        System.out.println(toString);
     }
     public void returnBook(){
          returnedDate = LocalDate.now().toString();

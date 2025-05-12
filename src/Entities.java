@@ -99,11 +99,14 @@ class Readers implements Entities {
     }
 
     public void displayAll() {
+        boolean isAny = false;
         ReaderNode curr = head;
         while (curr != null) {
+            isAny = true;
             curr.reader.display();
             curr = curr.next;
         }
+        if(!isAny) System.out.println("Nothing Found !");
     }
 
     public int getCount() {
@@ -184,11 +187,14 @@ class Librarians implements Entities {
     }
 
     public void displayAll() {
+        boolean isAny = false;
         LibrarianNode curr = head;
         while (curr != null) {
+            isAny = true;
             curr.librarian.display();
             curr = curr.next;
         }
+        if(!isAny) System.out.println("Nothing Found !");
     }
 
     public int getCount() {
@@ -251,11 +257,14 @@ class Books implements Entities {
 
     @Override
     public void displayAll() {
+        boolean isAny = false;
         BookNode current = head;
         while (current != null) {
+            isAny = true;
             current.book.display();
             current = current.next;
         }
+        if(!isAny) System.out.println("Nothing Found !");
     }
 
     @Override

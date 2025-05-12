@@ -1,119 +1,129 @@
 import java.io.*;
+
+//Class for Writing and Reading Data
 class FileStorage {
+
+    //Call Reads Everything from files
     static void load() {
-        StaticContext.readStaticContextFromFile();
-        Main.allReaders = readReadersFromFile("readersFile.dat");
-        Main.allBooks = readBooksFromFile("booksFile.dat");
-        Main.allIssues = readIssuesListFromFile("issuesFile.dat");
-        Main.allLibrarians = readLibrariansFromFile("librariansFile.dat");
+        StaticContext.readStaticCounts();
+        Main.allReaders = readReaders();
+        Main.allBooks = readBooks();
+        Main.allIssues = readIssues();
+        Main.allLibrarians = readLibrarians();
     }
+
+    //Call Saves Everything to files
     static void save() {
-        writeReadersToFile(Main.allReaders, "readersFile.dat");
-        writeBooksToFile(Main.allBooks, "booksFile.dat");
-        writeIssuesToFile(Main.allIssues, "issuesFile.dat");
-        writeLibrariansToFile(Main.allLibrarians, "librariansFile.dat");
+        saveReaders(Main.allReaders);
+        saveBooks(Main.allBooks);
+        saveIssues(Main.allIssues);
+        saveLibrarians(Main.allLibrarians);
+        StaticContext.saveStaticCounts();
     }
-    public static Books readBooksFromFile(String filename) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+
+    //Calls to write and read books
+    static Books readBooks() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("booksFile.dat"))) {
             return (Books) in.readObject();
         } catch (FileNotFoundException e) {
-            return new Books();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            return new Books(); // return empty if file not found
+        } catch (Exception e) {
+            System.out.println("Error loading books.");
+            Input.forceExit();
             return null;
         }
     }
-
-    static void writeBooksToFile(Books list, String filename) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(list);
-            System.out.println("Books saved to " + filename);
+    static void saveBooks(Books books) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("booksFile.dat"))) {
+            out.writeObject(books);
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving books.");
         }
     }
 
-    static Readers readReadersFromFile(String filename) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+    //Calls to write and read readers
+    static Readers readReaders() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("readersFile.dat"))) {
             return (Readers) in.readObject();
         } catch (FileNotFoundException e) {
             return new Readers();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error loading readers.");
+            Input.forceExit();
             return null;
         }
     }
-
-    static void writeReadersToFile(Readers list, String filename) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(list);
-            System.out.println("Readers saved to " + filename);
+    static void saveReaders(Readers readers) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("readersFile.dat"))) {
+            out.writeObject(readers);
+            System.out.println("Readers saved.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving readers.");
         }
     }
 
-    static Librarians readLibrariansFromFile(String filename) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+    //Calls to write and read librarians
+    static Librarians readLibrarians() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("librariansFile.dat"))) {
             return (Librarians) in.readObject();
         } catch (FileNotFoundException e) {
-            Librarians list = new Librarians();
-            list.add();
-            return list;
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+            Librarians librarians = new Librarians();
+            librarians.add(); // add default librarian
+            return librarians;
+        } catch (Exception e) {
+            System.out.println("Error loading librarians.");
+            Input.forceExit();
             return null;
         }
     }
-
-    static void writeLibrariansToFile(Librarians list, String filename) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(list);
-            System.out.println("Librarians saved to " + filename);
+    static void saveLibrarians(Librarians librarians) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("librariansFile.dat"))) {
+            out.writeObject(librarians);
+            System.out.println("Librarians saved.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving librarians.");
         }
     }
 
-    static Issues readIssuesListFromFile(String filename) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename))) {
+    //Calls to write and read issues
+    static Issues readIssues() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("issuesFile.dat"))) {
             return (Issues) in.readObject();
         } catch (FileNotFoundException e) {
             return new Issues();
-        } catch (ClassNotFoundException | IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Error loading issues.");
+            Input.forceExit();
             return null;
         }
     }
-
-    static void writeIssuesToFile(Issues list, String filename) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(filename))) {
-            out.writeObject(list);
-            System.out.println("Issues saved to " + filename);
+    static void saveIssues(Issues issues) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("issuesFile.dat"))) {
+            out.writeObject(issues);
+            System.out.println("Issues saved.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error saving issues.");
         }
     }
 }
 
-// Serializable class to store static counts
+// This class saves and loads static counters
 class StaticContext implements Serializable {
-    private static final long serialVersionUID = 1L;
-
     public int bookCount;
     public int readerCount;
     public int librarianCount;
     public int issueCount;
 
-    public StaticContext(int bookCount, int readerCount, int librarianCount, int issueCount) {
-        this.bookCount = bookCount;
-        this.readerCount = readerCount;
-        this.librarianCount = librarianCount;
-        this.issueCount = issueCount;
+    //Constructor Called every time contexts are saved
+    public StaticContext(int b, int r, int l, int i) {
+        bookCount = b;
+        readerCount = r;
+        librarianCount = l;
+        issueCount = i;
     }
 
-    // Save current static values to file
-    public static void writeStaticContextToFile() {
+    //To write current static state
+    public static void saveStaticCounts() {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("staticContext.dat"))) {
             StaticContext ctx = new StaticContext(
                     Book.bookCount,
@@ -122,25 +132,21 @@ class StaticContext implements Serializable {
                     Issue.issuesCount
             );
             out.writeObject(ctx);
-            System.out.println("Static context saved.");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Error : Unable To Write Static Context Error\n\tDo Not Add any entity now, But You may perform read and delete operations until developer resolve these Issue.");
         }
     }
 
-    // Load static values from file and apply to classes
-    public static void readStaticContextFromFile() {
+    // To read previous static state
+    public static void readStaticCounts() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("staticContext.dat"))) {
             StaticContext ctx = (StaticContext) in.readObject();
-
             Book.bookCount = ctx.bookCount;
             Reader.readerCount = ctx.readerCount;
             Librarian.librarianCount = ctx.librarianCount;
             Issue.issuesCount = ctx.issueCount;
-
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.print("");
+        } catch (Exception e) {
+            //If file does not exist, statics are on default value 0
         }
     }
 }
-

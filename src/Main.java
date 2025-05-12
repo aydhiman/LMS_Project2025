@@ -18,7 +18,7 @@ public class Main {
         //Function Call to Save data to files
         FileStorage.save();
 
-        //Status 1l denotes data to be successfully Stored
+        //Status 1 denotes data to be successfully Stored
         System.exit(1);
     }
 }
