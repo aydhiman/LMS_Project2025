@@ -211,53 +211,37 @@ class Book implements Entity {
     }
 
     public void issue(String readerId, String returnDate) {
-        if (!isIssued) {
-            isIssued = true;
-            currentIssue = new Issue(bookId, readerId, java.time.LocalDate.now().toString(), returnDate);
-        }
+        Issue issue = new Issue(bookId, readerId, java.time.LocalDate.now().toString(), returnDate);
+        issue(issue);
     }
+
     public void issue(Issue issue) {
         if (!isIssued) {
             isIssued = true;
             currentIssue = issue;
+        } else {
+            System.out.println("Book is not available at this time");
         }
     }
 
     public void returnBook() {
-        if(!isIssued){
-            System.out.println("Book is not Issued");
+        if (!isIssued || currentIssue == null) {
+            System.out.println("Book is not issued.");
+            return;
         }
         isIssued = false;
         currentIssue.returnBook();
         currentIssue = null;
     }
-    @Override
+
     public void display() {
-        String toString = new String("");
-        StringBuilder toAdd = new StringBuilder(bookId);
-        while(toAdd.length()<4){
-            toAdd = toAdd.insert(0,"0");
-        }
-        toString += "Book Id: " + toAdd;
-        toAdd = new StringBuilder(bookName);
-        if(toAdd.length()>15){
-            toAdd = new StringBuilder(toAdd.substring(0, 20));
-        }
-        while(toAdd.length()<15){
-            toAdd.append(" ");
-        }
-        toString += " | Book Title: " + toAdd;
-        toAdd = new StringBuilder(author);
-        if(toAdd.length()>8){
-            toAdd = new StringBuilder(toAdd.substring(0,8));
-        }
-        while(toAdd.length()<8){
-            toAdd.append(" ");
-        }
-        toString += " | Book Author: " + toAdd;
-        toString += " | Is Available: " + ((!isIssued)?"Available":"Not Available");
-        System.out.println(toString);
+        String toDisplay = "Book Id: " + getFormattedBookId();
+        toDisplay += " | Book Title: " + padOrTrim(bookName, 15);
+        toDisplay += " | Book Author: " + padOrTrim(author, 8);
+        toDisplay += " | Is Available: " + (isIssued ? "Not Available" : "Available");
+        System.out.println(toDisplay);
     }
+
     @Override
     public void update() {
         this.bookName = Input.takeLine("Enter New Book Name: ");
@@ -265,6 +249,7 @@ class Book implements Entity {
         System.out.println("Book updated with ID: " + bookId);
         display();
     }
+
     public void update(String bookName, String bookAuthor) {
         this.bookName = bookName;
         this.author = bookAuthor;
@@ -277,7 +262,23 @@ class Book implements Entity {
                 bookName.toLowerCase().contains(searchKey.toLowerCase()) ||
                 author.toLowerCase().contains(searchKey.toLowerCase());
     }
+
+    private String padOrTrim(String input, int length) {
+        StringBuilder sb = new StringBuilder(input);
+        if (sb.length() > length) {
+            return sb.substring(0, length);
+        }
+        while (sb.length() < length) {
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
+    private String getFormattedBookId() {
+        return String.format("%04d", Integer.parseInt(bookId));
+    }
 }
+
 
 class Issue implements Entity {
     public static int issuesCount = 0;
@@ -286,7 +287,7 @@ class Issue implements Entity {
     public final String readerId;
     public final String issueDate;
     public final String returnDate;
-    public String returnedDate = "n";
+    public String returnedDate = "Not Returned";
     boolean isReturned = false;
     public Issue(String bookId, String readerId, String issueDate, String returnDate) {
         this.issueId = "i" + (++issuesCount);

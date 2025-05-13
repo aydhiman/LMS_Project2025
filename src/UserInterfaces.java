@@ -39,10 +39,8 @@ class UserInterfaces {
         }
         }
         catch (Exception E){
-                System.out.println("Something Unexpected Occurred ! ");
-                FileStorage.save();
-                System.out.println("TryAgain !");
-            }
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
+        }
     }
 
     public void readerInterface(Reader reader) {
@@ -68,9 +66,7 @@ class UserInterfaces {
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
     public void searchBooks(){
@@ -90,31 +86,29 @@ class UserInterfaces {
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
 
     public void updateUser(User user){
         try {
-            String updateSelection = Input.takeLine("\tAccount Update Section :\n\t\t1.)Name and Contact\n\t\t2.)Name\n\t\t3.)Contact\n\t\t4.)Password\n\tEnter you Selection : ");
-            if (updateSelection.contains("*")) {
-                return;
-            } else if (updateSelection.contains("1")) {
-                user.update();
-            } else if (updateSelection.contains("2")) {
-                user.setUserName(Input.takeLine("Enter New User Name : "));
-            } else if (updateSelection.contains("3")) {
-                user.setUserName(Input.takeLine("Enter New Contact : "));
-            } else if (updateSelection.contains("4")) {
-                user.setKey();
+            while(true) {
+                String updateSelection = Input.takeLine("\tAccount Update Section :\n\t\t1.)Name and Contact\n\t\t2.)Name\n\t\t3.)Contact\n\t\t4.)Password\n\tEnter you Selection : ");
+                if (updateSelection.contains("*")) {
+                    return;
+                } else if (updateSelection.contains("1")) {
+                    user.update();
+                } else if (updateSelection.contains("2")) {
+                    user.setUserName(Input.takeLine("Enter New User Name : "));
+                } else if (updateSelection.contains("3")) {
+                    user.setUserName(Input.takeLine("Enter New Contact : "));
+                } else if (updateSelection.contains("4")) {
+                    user.setKey();
+                }
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
 
@@ -139,9 +133,7 @@ class UserInterfaces {
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
     public void bookManagement(){
@@ -168,9 +160,7 @@ class UserInterfaces {
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
     public void adminInterface(Librarian librarian){
@@ -199,79 +189,81 @@ class UserInterfaces {
         }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
     public void staffManagement(){
         try {
-            System.out.println("Select User Management Options :\n\t1.)Add New Staff\n\t2.)View All Staff\n\t3.)Search Staff\n\t4.)Update Staff\n\t5.)Delete Staff\n\t6.)ReCreate Staff Password");
-            String secondSelection = Input.takeLine("Enter Your Option : ");
-            if (secondSelection.contains("*")) return;
-            else if (secondSelection.contains("1")) {
-                Main.allLibrarians.add();
-            } else if (secondSelection.contains("2")) {
-                Main.allLibrarians.displayAll();
-            } else if (secondSelection.contains("3")) {
-                searchReaders();
-            } else if (secondSelection.contains("4")) {
-                String userId = Input.takeLine("Enter User ID to Update : ");
-                Entity user = Main.allLibrarians.findById(userId);
-                if (user == null) {
-                    System.out.println("User can not be retrieved to Update !");
+            while(true) {
+                System.out.println("Select User Management Options :\n\t1.)Add New Staff\n\t2.)View All Staff\n\t3.)Search Staff\n\t4.)Update Staff\n\t5.)Delete Staff\n\t6.)ReCreate Staff Password");
+                String secondSelection = Input.takeLine("Enter Your Option : ");
+                if (secondSelection.contains("*")) return;
+                else if (secondSelection.contains("1")) {
+                    Main.allLibrarians.add();
+                } else if (secondSelection.contains("2")) {
+                    Main.allLibrarians.displayAll();
+                } else if (secondSelection.contains("3")) {
+                    searchReaders();
+                } else if (secondSelection.contains("4")) {
+                    String userId = Input.takeLine("Enter User ID to Update : ");
+                    Entity user = Main.allLibrarians.findById(userId);
+                    if (user == null) {
+                        System.out.println("User can not be retrieved to Update !");
+                    }
+                    updateUser((User) user);
+                } else if (secondSelection.contains("5")) {
+                    Main.allLibrarians.deleteById(Input.takeLine("Enter Reader Id to Delete : "));
+                } else if (secondSelection.contains("6")) {
+                    String userId = Input.takeLine("Enter User Id to ReCreate Password : ");
+                    Librarian user = (Librarian) Main.allLibrarians.findById(userId);
+                    if (user == null) {
+                        System.out.println("Cannot Find ! Retry ");
+                        continue;
+                    }
+                    user.createKey();
                 }
-                updateUser((User) user);
-            } else if (secondSelection.contains("5")) {
-                Main.allLibrarians.deleteById(Input.takeLine("Enter Reader Id to Delete : "));
-            } else if (secondSelection.contains("6")) {
-                String userId = Input.takeLine("Enter User Id to ReCreate Password : ");
-                Librarian user = (Librarian) Main.allLibrarians.findById(userId);
-                if (user == null) {
-                    System.out.println("Cannot Find ! Retry ");
-                }
-                user.createKey();
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
+
     public void userManagement(){
         try {
-            System.out.println("Select User Management Options :\n\t1.)Add New Reader\n\t2.)View All Readers\n\t3.)Search Reader\n\t4.)Update Reader\n\t5.)Delete Reader\n\t6.)ReCreate User Password");
-            String secondSelection = Input.takeLine("Enter Your Option : ");
-            if (secondSelection.contains("*")) return;
-            else if (secondSelection.contains("1")) {
-                Main.allReaders.add();
-            } else if (secondSelection.contains("2")) {
-                Main.allReaders.displayAll();
-            } else if (secondSelection.contains("3")) {
-                searchReaders();
-            } else if (secondSelection.contains("4")) {
-                String userId = Input.takeLine("Enter User ID to Update : ");
-                Entity user = Main.allBooks.findById(userId);
-                if (user == null) {
-                    System.out.println("User can not be retrieved to Update !");
+            while(true) {
+                System.out.println("Select User Management Options :\n\t1.)Add New Reader\n\t2.)View All Readers\n\t3.)Search Reader\n\t4.)Update Reader\n\t5.)Delete Reader\n\t6.)ReCreate User Password");
+                String secondSelection = Input.takeLine("Enter Your Option : ");
+                if (secondSelection.contains("*")) return;
+                else if (secondSelection.contains("1")) {
+                    Main.allReaders.add();
+                } else if (secondSelection.contains("2")) {
+                    Main.allReaders.displayAll();
+                } else if (secondSelection.contains("3")) {
+                    searchReaders();
+                } else if (secondSelection.contains("4")) {
+                    String userId = Input.takeLine("Enter User ID to Update : ");
+                    Entity user = Main.allReaders.findById(userId);
+                    if (user == null) {
+                        System.out.println("User can not be retrieved to Update !");
+                        continue;
+                    }
+                    updateUser((User) user);
+                } else if (secondSelection.contains("5")) {
+                    Main.allReaders.deleteById(Input.takeLine("Enter Reader Id to Delete : "));
+                } else if (secondSelection.contains("6")) {
+                    String userId = Input.takeLine("Enter User Id to ReCreate Password : ");
+                    Reader user = (Reader) Main.allReaders.findById(userId);
+                    if (user == null) {
+                        System.out.println("Cannot Find ! Retry ");
+                        continue;
+                    }
+                    user.createKey();
                 }
-                updateUser((User) user);
-            } else if (secondSelection.contains("5")) {
-                Main.allReaders.deleteById(Input.takeLine("Enter Reader Id to Delete : "));
-            } else if (secondSelection.contains("6")) {
-                String userId = Input.takeLine("Enter User Id to ReCreate Password : ");
-                Reader user = (Reader) Main.allReaders.findById(userId);
-                if (user == null) {
-                    System.out.println("Cannot Find ! Retry ");
-                }
-                user.createKey();
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
     public void searchReaders(){
@@ -281,48 +273,47 @@ class UserInterfaces {
                 if (searchInput.contains("*")) return;
                 Readers searched = Main.allReaders.findByTags(searchInput);
                 if (searched == null) {
+                    System.out.println("User not found !");
                     continue;
                 }
                 searched.displayAll();
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
     public void issuesManagement(){
         try {
-            System.out.println("Select Issues Management Options :\n\t1.)New Issue\n\t2.)Return Book\n\t3.)View All Issues\n\t4.)View Reader Vise Issues\n\t5.)X to return");
-            String secondSelection = Input.takeLine("Enter Your Option : ");
-            if (secondSelection.contains("1")) {
-                Main.allIssues.add(Input.takeLine("Enter Book id : "), Input.takeLine("Enter Reader ID : "), Input.takeInt("Enter the No. Of Days to issue : "));
-            } else if (secondSelection.contains("2")) {
-                Book toReturn = (Book) Main.allBooks.findById(Input.takeLine("Enter the Book Id to search : "));
-                if (toReturn == null) {
-                    System.out.println("Book Not Found ! ");
-                } else toReturn.returnBook();
-            } else if (secondSelection.contains("3")) {
-                Main.allIssues.displayAll();
-            } else if (secondSelection.contains("4")) {
-                while (true) {
-                    String readerId = Input.takeLine("Enter the Reader Id to view issues : ");
-                    Reader toView = (Reader) Main.allReaders.findById(readerId);
-                    if (toView == null) {
-                        System.out.println("Reader Id not Fount ! Try Again");
-                        return;
+            while(true) {
+                System.out.println("Select Issues Management Options :\n\t1.)New Issue\n\t2.)Return Book\n\t3.)View All Issues\n\t4.)View Reader Vise Issues");
+                String secondSelection = Input.takeLine("Enter Your Option : ");
+                if (secondSelection.contains("1")) {
+                    Main.allIssues.add(Input.takeLine("Enter Book id : "), Input.takeLine("Enter Reader ID : "), Input.takeInt("Enter the No. Of Days to issue : "));
+                } else if (secondSelection.contains("2")) {
+                    Book toReturn = (Book) Main.allBooks.findById(Input.takeLine("Enter the Book Id to return : "));
+                    if (toReturn == null) {
+                        System.out.println("Book Not Found ! ");
+                    } else toReturn.returnBook();
+                } else if (secondSelection.contains("3")) {
+                    Main.allIssues.displayAll();
+                } else if (secondSelection.contains("4")) {
+                    while (true) {
+                        String readerId = Input.takeLine("Enter the Reader Id to view issues : ");
+                        Reader toView = (Reader) Main.allReaders.findById(readerId);
+                        if (toView == null) {
+                            System.out.println("Reader not Found ! Try Again");
+                            return;
+                        }
+                        toView.account.display();
                     }
-                    toView.account.display();
+                } else if (secondSelection.toUpperCase().contains("*")) {
+                    return;
                 }
-            } else if (secondSelection.toUpperCase().contains("X")) {
-                return;
             }
         }
         catch (Exception E){
-            System.out.println("Something Unexpected Occurred ! ");
-            FileStorage.save();
-            System.out.println("TryAgain !");
+            System.out.println("Something Unexpected Occurred,Try Again ! ");
         }
     }
 }

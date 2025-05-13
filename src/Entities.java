@@ -267,6 +267,10 @@ class Books implements Entities {
         if(!isAny) System.out.println("Nothing Found !");
     }
 
+    public void displayByName(){
+
+    }
+
     @Override
     public Entity findById(String bookId) {
         BookNode current = head;
@@ -348,8 +352,13 @@ class  Issues implements Serializable {
 
     public void add(String readerId, String bookId) {
         Book book = (Book) Main.allBooks.findById(bookId);
+        Reader reader = (Reader) Main.allReaders.findById(readerId);
         if (book == null) {
             System.out.println("Book not found!");
+            return;
+        }
+        if (reader == null) {
+            System.out.println("Reader not found!");
             return;
         }
         if (book.isIssued()) {
