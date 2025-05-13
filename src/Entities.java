@@ -43,12 +43,9 @@ class Readers implements Entities {
     }
 
     public Entity findById(String id) {
-        System.out.println("searching for " + id);
         ReaderNode curr = head;
         while (curr != null) {
-            System.out.println("Comparing with user if " + curr.reader.userId);
             if (curr.reader.userId.equals(id)){
-                System.out.println("matched");
                 return curr.reader;
             }
             curr = curr.next;
@@ -347,7 +344,7 @@ class  Issues implements Serializable {
             tail = node;
         }
         issueCount++;
-        System.out.println("Book Issued: " + issue.issueId);
+        issue.display();
     }
 
     public void add(String readerId, String bookId) {
@@ -373,7 +370,12 @@ class  Issues implements Serializable {
 
     public void add(String bookId, String readerId, int days) {
         Book book = (Book) Main.allBooks.findById(bookId);
+        Reader reader = (Reader) Main.allReaders.findById(readerId);
         if (book == null) {
+            System.out.println("Book not found!");
+            return;
+        }
+        if(reader == null){
             System.out.println("Book not found!");
             return;
         }
@@ -381,8 +383,8 @@ class  Issues implements Serializable {
             System.out.println("Book Not Available!");
             return;
         }
-
         Issue issue = new Issue(bookId, readerId, LocalDate.now().toString(), LocalDate.now().plusDays(days).toString());
+        book.issue(issue);
         add(issue);
     }
 

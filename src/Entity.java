@@ -319,15 +319,20 @@ class Issue implements Entity {
     }
     public void returnBook(){
          returnedDate = LocalDate.now().toString();
+         display();
     }
     public void update() {
     }
     public boolean isOverDue() {
-        String[] arr = returnDate.split("-");
-        LocalDate toReturn = LocalDate.of(Integer.parseInt(arr[0]),Integer.parseInt(arr[1]),Integer.parseInt(arr[2]));
-        if(LocalDate.now().isAfter(toReturn))return true;
-        return false;
+        try {
+            LocalDate toReturn = LocalDate.parse(returnDate); // ISO-8601 format: "yyyy-MM-dd"
+            return isPending() && LocalDate.now().isAfter(toReturn);
+        } catch (Exception e) {
+            System.out.println("Invalid return date format: " + returnDate);
+            return false; // or true, depending on how you want to treat parsing failures
+        }
     }
+
     public boolean isPending() {
         if(returnedDate.equals("n")) return true;
         return false;

@@ -30,26 +30,33 @@ class Account implements Serializable {
 
     public void display() {
         refreshAccounting();
-        try {
-            System.out.println("Your Pending Issues:");
-            getPendingIssues().displayAll();
-        } catch (Exception e) {
-            System.out.println("No Pending Issues");
-        }
 
         // Display Most Recent Issue
         try {
-            System.out.println("\nYour Most Recent Issue:");
+            System.out.println("\nMost Recent Issue:");
             Issue recent = getMostRecentIssue();
             if (recent != null) recent.display();
         } catch (Exception e) {
             System.out.println("No Issues Yet");
+        }finally{
+            System.out.println("\n");
         }
+
+        try {
+            System.out.println("Pending Issues:");
+            getPendingIssues().displayAll();
+        } catch (Exception e) {
+            System.out.println("No Pending Issues");
+        }
+        finally {
+            System.out.println("\n");
+        }
+
 
         // Display Overdue Issues
         try {
-            System.out.println("\nYour Overdue Issues:");
-            getOverdueIssues().displayAll();
+            System.out.println("\nOverdue Issues:");
+            userIssues.findOverDueIssues().displayAll();
         } catch (Exception e) {
             System.out.println("No Overdue Issues");
         }
