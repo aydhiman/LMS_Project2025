@@ -99,9 +99,9 @@ class UserInterfaces {
                 } else if (updateSelection.contains("1")) {
                     user.update();
                 } else if (updateSelection.contains("2")) {
-                    user.setUserName(Input.takeLine("Enter New User Name : "));
+                    user.setUserName(UserInput.name());
                 } else if (updateSelection.contains("3")) {
-                    user.setUserName(Input.takeLine("Enter New Contact : "));
+                    user.setUserName(UserInput.contact());
                 } else if (updateSelection.contains("4")) {
                     user.setKey();
                 }
@@ -289,7 +289,10 @@ class UserInterfaces {
                 System.out.println("Select Issues Management Options :\n\t1.)New Issue\n\t2.)Return Book\n\t3.)View All Issues\n\t4.)View Reader Vise Issues");
                 String secondSelection = Input.takeLine("Enter Your Option : ");
                 if (secondSelection.contains("1")) {
-                    Main.allIssues.add(Input.takeLine("Enter Book id : "), Input.takeLine("Enter Reader ID : "), Input.takeInt("Enter the No. Of Days to issue : "));
+                    Main.allIssues.add(
+                            Input.takeLine("Enter Book id : "),
+                            Input.takeLine("Enter Reader ID : "),
+                            Input.takeInt("Enter the No. Of Days to issue : "));
                 } else if (secondSelection.contains("2")) {
                     Book toReturn = (Book) Main.allBooks.findById(Input.takeLine("Enter the Book Id to return : "));
                     if (toReturn == null) {

@@ -13,8 +13,8 @@ abstract class User implements Entity {
     private String userContact;
 
     public User() {
-        this.userName = Input.takeLine("Enter Name: ");
-        this.userContact = Input.takeLine("Enter Contact: ");
+        this.userName = UserInput.name();
+        this.userContact = UserInput.contact();
     }
 
     public User(String userName, String userContact, String userKey) {
@@ -45,7 +45,7 @@ abstract class User implements Entity {
     }
 
     public boolean verify() {
-        return verify(Input.takeLine("Enter your Key: "));
+        return verify(UserInput.password());
     }
 
     public boolean verify(String key) {
@@ -116,8 +116,8 @@ abstract class User implements Entity {
     @Override
     public void update() {
         if (!verify()) return;
-        this.userName = Input.takeLine("Enter new user name: ");
-        this.userContact = Input.takeLine("Enter new contact: ");
+        this.userName = UserInput.name();
+        this.userContact = UserInput.contact();
     }
 
     public void update(String userName, String userContact) {
@@ -176,7 +176,8 @@ class Book implements Entity {
     private Issue currentIssue;
 
     public Book() {
-        this(Input.takeLine("Enter Book Name: "), Input.takeLine("Enter Author Name: "));
+        this(UserInput.name("Book "),
+                UserInput.name("Author "));
     }
 
     public Book(String bookName, String bookAuthor) {
@@ -244,8 +245,8 @@ class Book implements Entity {
 
     @Override
     public void update() {
-        this.bookName = Input.takeLine("Enter New Book Name: ");
-        this.author = Input.takeLine("Enter New Author Name: ");
+        this.bookName = UserInput.name("Author ");
+        this.author = UserInput.name("Author ");
         System.out.println("Book updated with ID: " + bookId);
         display();
     }
